@@ -1,16 +1,44 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectContacts, selectError, selectIsLoading } from 'redux/selectors';
+import { fetchContacts } from 'redux/operations';
+
+import { ContactForm }  from './ContactForm/ContactForm';
+import { ContactsList } from './ContactsList/ContactsList';
+import { Filter }  from './Filter/Filter';
+import { Loader } from './Loader/Loader';
+
+
+import { Container, Title, Empty } from './App.styled';
+
+
 export const App = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
+    <Container>
+      <Title>Phonebook</Title>
+      <ContactForm />
+      <Title>Contacts</Title>
+      {isLoading && <Loader />}
+      <Filter />
+      {contacts.length > 0 && (
+        <>
+          <ContactsList />
+        </>
+      )}
+      {isLoading && !error && <h4>Request in progress...</h4>}
+      {error && <h2>ERROR...</h2>}
+      {contacts.length <= 0 && !error && !isLoading && (      
+        <Empty>Sorry. Your phonebok is empty.</Empty>
+      )}
+    </Container>
   );
 };
