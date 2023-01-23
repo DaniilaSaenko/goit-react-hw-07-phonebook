@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { ToastContainer} from 'react-toastify';
 import { selectContacts, selectError, selectIsLoading } from 'redux/selectors';
 import { fetchContacts } from 'redux/operations';
 
@@ -39,6 +40,7 @@ export const App = () => {
       {contacts.length <= 0 && !error && !isLoading && (      
         <Empty>Sorry. Your phonebok is empty.</Empty>
       )}
+      <ToastContainer position="top-center" reverseOrder={false}  />
     </Container>
   );
 };

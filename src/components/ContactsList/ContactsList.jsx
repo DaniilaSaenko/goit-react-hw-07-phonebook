@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { selectContacts, selectFilter } from 'redux/selectors';
+import { sort } from './sortContacts';
 
 import { Contact } from '../ContactItem/ContactItem';
 import { Container } from './ContactsList.styled';
@@ -12,7 +13,7 @@ export const ContactsList = () =>  {
 
   return (
     <Container>
-      {contacts
+      {sort(contacts)
         .filter(contact => {
           return filter
             ? contact.name.toLowerCase().includes(filter.toLowerCase())
